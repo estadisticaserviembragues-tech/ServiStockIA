@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pandas
+sqlalchemy
+psycopg[binary]
+python-dotenv
+rapidfuzz
+openpyxl
+xlrd
