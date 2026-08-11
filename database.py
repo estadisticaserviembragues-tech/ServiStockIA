@@ -78,7 +78,6 @@ def cargar_inventario_completo() -> pd.DataFrame:
     desde PostgreSQL Neon.
 
     Esta función reemplaza la lectura local de:
-
     - inventario.xlsx
     - marcas.xls
     """
@@ -274,6 +273,131 @@ def obtener_medidas_tambor(
 
 
 # ==================================================
+# CARGAR MEDIDAS DE EMBRAGUES
+# ==================================================
+
+def cargar_medidas_embragues() -> pd.DataFrame:
+    """
+    Carga todas las medidas de embragues desde Neon.
+
+    Devuelve columnas en mayúscula para que buscador.py
+    pueda trabajar con ellas directamente.
+    """
+
+    consulta = text(
+        """
+        SELECT
+            codigo AS "CODIGO",
+            referencia AS "REFERENCIA",
+            diametro_pd AS "DIAMETRO_P_D",
+            manzana_pd AS "MANZANA_P_D",
+            n_dientes AS "N_DIENTES",
+            diametro_motriz AS "DIAMETRO_MOTRIZ",
+            diam_perno_a_perno AS "DIAM_PERNO_A_PERNO",
+            aplicacion AS "APLICACION",
+            observacion AS "OBSERVACION"
+        FROM medidas_embragues
+        ORDER BY codigo
+        """
+    )
+
+    with engine.connect() as conexion:
+        df = pd.read_sql(
+            consulta,
+            conexion,
+        )
+
+    columnas_texto = [
+        "CODIGO",
+        "REFERENCIA",
+        "DIAMETRO_P_D",
+        "MANZANA_P_D",
+        "N_DIENTES",
+        "DIAMETRO_MOTRIZ",
+        "DIAM_PERNO_A_PERNO",
+        "APLICACION",
+        "OBSERVACION",
+    ]
+
+    for columna in columnas_texto:
+        if columna in df.columns:
+            df[columna] = (
+                df[columna]
+                .fillna("")
+                .astype(str)
+                .str.strip()
+            )
+
+    return df
+
+
+# ==================================================
+# MEDIDAS DE EMBRAGUES
+# ==================================================
+
+def obtener_medidas_embrague(
+    codigo: str,
+) -> dict[str, Any] | None:
+    codigo_normalizado = normalizar_codigo(
+        codigo
+    )
+
+    consulta = text(
+        """
+        SELECT
+            codigo,
+            referencia,
+            diametro_pd,
+            manzana_pd,
+            n_dientes,
+            diametro_motriz,
+            diam_perno_a_perno,
+            aplicacion,
+            observacion
+        FROM medidas_embragues
+        WHERE codigo = :codigo
+        LIMIT 1
+        """
+    )
+
+    with engine.connect() as conexion:
+        resultado = conexion.execute(
+            consulta,
+            {
+                "codigo": codigo_normalizado,
+            },
+        ).mappings().first()
+
+    if resultado is None:
+        return None
+
+    return {
+        "tipo_medida": "EMBRAGUE",
+        "codigo": resultado["codigo"],
+        "referencia": resultado["referencia"],
+        "aplicacion": resultado["aplicacion"],
+        "observacion": resultado["observacion"],
+        "medidas": {
+            "diametro_p_d": resultado[
+                "diametro_pd"
+            ],
+            "manzana_p_d": resultado[
+                "manzana_pd"
+            ],
+            "n_dientes": resultado[
+                "n_dientes"
+            ],
+            "diametro_motriz": resultado[
+                "diametro_motriz"
+            ],
+            "diam_perno_a_perno": resultado[
+                "diam_perno_a_perno"
+            ],
+        },
+    }
+
+
+# ==================================================
 # OBTENER CUALQUIER TIPO DE MEDIDA
 # ==================================================
 
@@ -281,8 +405,10 @@ def obtener_medidas_producto(
     codigo: str,
 ) -> dict[str, Any] | None:
     """
-    Primero busca medidas de disco.
-    Si no existen, busca medidas de tambor.
+    Busca la ficha técnica en este orden:
+    1. Disco
+    2. Tambor
+    3. Embrague
     """
 
     medidas_disco = obtener_medidas_disco(
@@ -292,7 +418,14 @@ def obtener_medidas_producto(
     if medidas_disco is not None:
         return medidas_disco
 
-    return obtener_medidas_tambor(
+    medidas_tambor = obtener_medidas_tambor(
+        codigo
+    )
+
+    if medidas_tambor is not None:
+        return medidas_tambor
+
+    return obtener_medidas_embrague(
         codigo
     )
 
@@ -390,12 +523,6 @@ if __name__ == "__main__":
         )
 
         print()
-        print("Primeros registros:")
-        print(
-            df.head()
-        )
-
-        print()
         print("Última sincronización:")
 
         ultima = obtener_ultima_sincronizacion()
@@ -405,7 +532,7 @@ if __name__ == "__main__":
         )
 
         print()
-        print("Prueba de medidas HF-53N:")
+        print("Prueba de medidas disco HF-53N:")
 
         print(
             obtener_medidas_producto(
@@ -414,12 +541,21 @@ if __name__ == "__main__":
         )
 
         print()
-        print("Prueba de medidas HF-53A:")
+        print("Prueba de medidas tambor HF-53A:")
 
         print(
             obtener_medidas_producto(
                 "HF - 53A"
             )
+        )
+
+        print()
+        print("Cantidad de registros de embragues:")
+
+        embragues = cargar_medidas_embragues()
+
+        print(
+            len(embragues)
         )
 
     except Exception as error:

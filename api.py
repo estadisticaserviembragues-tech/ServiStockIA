@@ -8,16 +8,22 @@ from config import (
     API_TITULO,
     API_VERSION,
 )
+
 from database import (
     cargar_inventario_completo,
     obtener_medidas_producto,
     obtener_ultima_sincronizacion,
 )
+
 from buscador import (
     limpiar_codigo,
     procesar_consulta,
 )
 
+
+# ==================================================
+# CREAR APLICACIÓN
+# ==================================================
 
 app = FastAPI(
     title=API_TITULO,
@@ -25,6 +31,10 @@ app = FastAPI(
     version=API_VERSION,
 )
 
+
+# ==================================================
+# CORS
+# ==================================================
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,10 +45,15 @@ app.add_middleware(
 )
 
 
+# ==================================================
+# RESPUESTA DE ERROR
+# ==================================================
+
 def respuesta_error(
     mensaje: str,
     detalle: str | None = None,
 ) -> dict[str, Any]:
+
     respuesta: dict[str, Any] = {
         "estado": "error",
         "mensaje": mensaje,
@@ -50,8 +65,13 @@ def respuesta_error(
     return respuesta
 
 
+# ==================================================
+# INICIO
+# ==================================================
+
 @app.get("/")
 def inicio() -> dict[str, Any]:
+
     return {
         "estado": "activo",
         "nombre": API_TITULO,
@@ -62,15 +82,24 @@ def inicio() -> dict[str, Any]:
     }
 
 
+# ==================================================
+# SALUD
+# ==================================================
+
 @app.get("/salud")
 def comprobar_salud() -> dict[str, Any]:
+
     try:
         inventario = cargar_inventario_completo()
 
         return {
             "estado": "correcto",
-            "mensaje": "La base en Neon se cargó correctamente.",
-            "registros": int(len(inventario)),
+            "mensaje": (
+                "La base en Neon se cargó correctamente."
+            ),
+            "registros": int(
+                len(inventario)
+            ),
             "productos_unicos": int(
                 inventario["CODIGO"].nunique()
             ),
@@ -84,6 +113,7 @@ def comprobar_salud() -> dict[str, Any]:
         }
 
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
             detail=respuesta_error(
@@ -93,14 +123,23 @@ def comprobar_salud() -> dict[str, Any]:
         ) from error
 
 
+# ==================================================
+# VERSIÓN
+# ==================================================
+
 @app.get("/version")
 def obtener_version() -> dict[str, Any]:
+
     return {
         "nombre": API_TITULO,
         "version": API_VERSION,
         "estado": "desarrollo",
     }
 
+
+# ==================================================
+# BUSCAR
+# ==================================================
 
 @app.get("/buscar")
 def buscar(
@@ -113,25 +152,34 @@ def buscar(
         ),
     ),
 ) -> dict[str, Any]:
+
     try:
         resultado = procesar_consulta(
             consulta
         )
 
+        # Agregar ficha técnica.
+        # Puede ser DISCO, TAMBOR o EMBRAGUE.
         for producto in resultado.get(
             "productos",
             [],
         ):
+
             codigo = producto.get(
                 "codigo",
                 "",
             )
 
-            producto["ficha_tecnica"] = (
+            ficha_tecnica = (
                 obtener_medidas_producto(
                     codigo
                 )
             )
+
+            if ficha_tecnica is not None:
+                producto[
+                    "ficha_tecnica"
+                ] = ficha_tecnica
 
         return {
             "estado": "correcto",
@@ -139,6 +187,7 @@ def buscar(
         }
 
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
             detail=respuesta_error(
@@ -148,10 +197,15 @@ def buscar(
         ) from error
 
 
+# ==================================================
+# PRODUCTO POR CÓDIGO
+# ==================================================
+
 @app.get("/producto/{codigo}")
 def obtener_producto(
     codigo: str,
 ) -> dict[str, Any]:
+
     try:
         resultado = procesar_consulta(
             codigo
@@ -176,6 +230,7 @@ def obtener_producto(
         ]
 
         if not productos_exactos:
+
             raise HTTPException(
                 status_code=404,
                 detail=respuesta_error(
@@ -185,11 +240,16 @@ def obtener_producto(
 
         producto = productos_exactos[0]
 
-        producto["ficha_tecnica"] = (
+        ficha_tecnica = (
             obtener_medidas_producto(
                 codigo
             )
         )
+
+        if ficha_tecnica is not None:
+            producto[
+                "ficha_tecnica"
+            ] = ficha_tecnica
 
         return {
             "estado": "correcto",
@@ -200,6 +260,7 @@ def obtener_producto(
         raise
 
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
             detail=respuesta_error(
@@ -209,25 +270,40 @@ def obtener_producto(
         ) from error
 
 
+# ==================================================
+# STOCK POR CÓDIGO
+# ==================================================
+
 @app.get("/stock/{codigo}")
 def obtener_stock(
     codigo: str,
     almacen: str | None = Query(
         default=None,
-        description="Ejemplo: NORTE o NORTE FGS",
+        description=(
+            "Ejemplo: NORTE, NORTE FGS, "
+            "SUR o SUR FGS."
+        ),
     ),
 ) -> dict[str, Any]:
+
     try:
-        consulta = f"cuanto tengo de {codigo}"
+        consulta = (
+            f"cuanto tengo de {codigo}"
+        )
 
         if almacen:
-            consulta += f" en {almacen}"
+            consulta += (
+                f" en {almacen}"
+            )
 
         resultado = procesar_consulta(
             consulta
         )
 
-        if not resultado.get("productos"):
+        if not resultado.get(
+            "productos"
+        ):
+
             raise HTTPException(
                 status_code=404,
                 detail=respuesta_error(
@@ -251,6 +327,7 @@ def obtener_stock(
         raise
 
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
             detail=respuesta_error(
@@ -260,20 +337,29 @@ def obtener_stock(
         ) from error
 
 
+# ==================================================
+# MEDIDAS TÉCNICAS
+# ==================================================
+
 @app.get("/medidas/{codigo}")
 def consultar_medidas(
     codigo: str,
 ) -> dict[str, Any]:
+
     try:
-        ficha_tecnica = obtener_medidas_producto(
-            codigo
+        ficha_tecnica = (
+            obtener_medidas_producto(
+                codigo
+            )
         )
 
         if ficha_tecnica is None:
+
             raise HTTPException(
                 status_code=404,
                 detail=respuesta_error(
-                    "Este producto no tiene medidas técnicas registradas."
+                    "Este producto no tiene "
+                    "medidas técnicas registradas."
                 ),
             )
 
@@ -286,6 +372,7 @@ def consultar_medidas(
         raise
 
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
             detail=respuesta_error(
@@ -295,18 +382,25 @@ def consultar_medidas(
         ) from error
 
 
+# ==================================================
+# ÚLTIMA SINCRONIZACIÓN
+# ==================================================
+
 @app.get("/ultima-sincronizacion")
 def ultima_sincronizacion() -> dict[str, Any]:
+
     try:
         sincronizacion = (
             obtener_ultima_sincronizacion()
         )
 
         if sincronizacion is None:
+
             return {
                 "estado": "sin_registros",
                 "mensaje": (
-                    "Todavía no existen sincronizaciones registradas."
+                    "Todavía no existen "
+                    "sincronizaciones registradas."
                 ),
                 "sincronizacion": None,
             }
@@ -317,17 +411,24 @@ def ultima_sincronizacion() -> dict[str, Any]:
         }
 
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
             detail=respuesta_error(
-                "No fue posible consultar la sincronización.",
+                "No fue posible consultar "
+                "la sincronización.",
                 str(error),
             ),
         ) from error
 
 
+# ==================================================
+# ESTADÍSTICAS
+# ==================================================
+
 @app.get("/estadisticas")
 def obtener_estadisticas() -> dict[str, Any]:
+
     try:
         inventario = cargar_inventario_completo()
 
@@ -341,7 +442,11 @@ def obtener_estadisticas() -> dict[str, Any]:
                     .replace(",", ".")
                 )
                 if str(valor).strip()
-                not in {"", "nan", "None"}
+                not in {
+                    "",
+                    "nan",
+                    "None",
+                }
                 else 0.0
             )
         )
@@ -354,8 +459,11 @@ def obtener_estadisticas() -> dict[str, Any]:
             "ALMACEN",
             sort=False,
         ):
+
             stock_almacen = sum(
-                grupo["CANTIDAD"].apply(
+                grupo[
+                    "CANTIDAD"
+                ].apply(
                     lambda valor: (
                         float(
                             str(valor)
@@ -375,10 +483,16 @@ def obtener_estadisticas() -> dict[str, Any]:
 
             resumen_almacenes.append(
                 {
-                    "almacen": str(almacen),
-                    "registros": int(len(grupo)),
+                    "almacen": str(
+                        almacen
+                    ),
+                    "registros": int(
+                        len(grupo)
+                    ),
                     "productos_unicos": int(
-                        grupo["CODIGO"].nunique()
+                        grupo[
+                            "CODIGO"
+                        ].nunique()
                     ),
                     "stock_total": float(
                         stock_almacen
@@ -388,12 +502,18 @@ def obtener_estadisticas() -> dict[str, Any]:
 
         return {
             "estado": "correcto",
-            "registros": int(len(inventario)),
+            "registros": int(
+                len(inventario)
+            ),
             "productos_unicos": int(
-                inventario["CODIGO"].nunique()
+                inventario[
+                    "CODIGO"
+                ].nunique()
             ),
             "marcas": int(
-                inventario["MARCA"].nunique()
+                inventario[
+                    "MARCA"
+                ].nunique()
             ),
             "stock_total": float(
                 cantidades.sum()
@@ -402,10 +522,12 @@ def obtener_estadisticas() -> dict[str, Any]:
         }
 
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
             detail=respuesta_error(
-                "No fue posible calcular las estadísticas.",
+                "No fue posible calcular "
+                "las estadísticas.",
                 str(error),
             ),
         ) from error

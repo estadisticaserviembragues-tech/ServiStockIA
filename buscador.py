@@ -6,7 +6,12 @@ import pandas as pd
 from rapidfuzz import fuzz
 
 from config import MAX_RESULTADOS
-from database import cargar_inventario_completo
+from database_backup import cargar_inventario_completo
+
+try:
+    from database_backup import cargar_medidas_embragues
+except ImportError:
+    cargar_medidas_embragues = None
 
 
 # ==================================================
@@ -833,6 +838,78 @@ def agrupar_productos(
     return productos
 
 
+
+# ==================================================
+# FICHA TÉCNICA DE EMBRAGUES
+# ==================================================
+
+def _valor_limpio(valor: Any) -> Any:
+    """Convierte NaN/None en None y deja los demás valores listos para JSON."""
+    if valor is None:
+        return None
+    try:
+        if pd.isna(valor):
+            return None
+    except Exception:
+        pass
+    texto = str(valor).strip()
+    return texto if texto else None
+
+
+def obtener_ficha_embrague(codigo: Any) -> dict[str, Any] | None:
+    """
+    Busca las medidas de embrague por código y devuelve una ficha técnica.
+    Requiere que database.py exponga cargar_medidas_embragues().
+    """
+    if cargar_medidas_embragues is None:
+        return None
+
+    try:
+        df_medidas = cargar_medidas_embragues()
+    except Exception:
+        return None
+
+    if df_medidas is None or df_medidas.empty or "CODIGO" not in df_medidas.columns:
+        return None
+
+    codigo_limpio = limpiar_codigo(codigo)
+    coincidencias = df_medidas[
+        df_medidas["CODIGO"].apply(limpiar_codigo) == codigo_limpio
+    ]
+
+    if coincidencias.empty:
+        return None
+
+    fila = coincidencias.iloc[0]
+
+    return {
+        "tipo_medida": "EMBRAGUE",
+        "codigo": _valor_limpio(fila.get("CODIGO")),
+        "aplicacion": _valor_limpio(
+            fila.get("APLICACION")
+            if "APLICACION" in fila.index
+            else fila.get("REFERENCIA")
+        ),
+        "referencia": _valor_limpio(fila.get("REFERENCIA")),
+        "medidas": {
+            "diametro_p_d": _valor_limpio(fila.get("DIAMETRO_P_D")),
+            "manzana_p_d": _valor_limpio(fila.get("MANZANA_P_D")),
+            "n_dientes": _valor_limpio(fila.get("N_DIENTES")),
+            "diametro_motriz": _valor_limpio(fila.get("DIAMETRO_MOTRIZ")),
+            "diam_perno_a_perno": _valor_limpio(fila.get("DIAM_PERNO_A_PERNO")),
+        },
+        "observacion": _valor_limpio(fila.get("OBSERVACION")),
+    }
+
+
+def agregar_fichas_embrague(productos: list[dict[str, Any]]) -> None:
+    """Agrega ficha_tecnica a productos que tengan medidas de embrague."""
+    for producto in productos:
+        ficha = obtener_ficha_embrague(producto.get("codigo"))
+        if ficha:
+            producto["ficha_tecnica"] = ficha
+
+
 # ==================================================
 # RESPUESTA PRINCIPAL DEL MOTOR
 # ==================================================
@@ -885,6 +962,8 @@ def procesar_consulta(
     productos = agrupar_productos(
         filas_filtradas
     )
+
+    agregar_fichas_embrague(productos)
 
     stock_total = sum(
         producto[
