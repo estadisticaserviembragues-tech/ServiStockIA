@@ -6,7 +6,7 @@ import pandas as pd
 from rapidfuzz import fuzz
 
 from config import MAX_RESULTADOS
-from database_backup import cargar_inventario_completo
+from database import cargar_inventario_completo
 
 try:
     from database_backup import cargar_medidas_embragues
