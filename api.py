@@ -69,9 +69,8 @@ def respuesta_error(
 # INICIO
 # ==================================================
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 def inicio() -> dict[str, Any]:
-
     return {
         "estado": "activo",
         "nombre": API_TITULO,
