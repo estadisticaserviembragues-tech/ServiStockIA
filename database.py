@@ -1,3 +1,42 @@
+import os
+from pathlib import Path
+import psycopg2
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+BASE_DIR = Path(__file__).resolve().parent
+
+raw_db_url = os.getenv(
+    "DATABASE_URL",
+    f"sqlite:///{(BASE_DIR / 'servistock.db').as_posix()}",
+)
+
+if raw_db_url and raw_db_url.startswith("sqlite"):
+    DATABASE_URL = raw_db_url
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={"check_same_thread": False},
+    )
+else:
+    clean_url = raw_db_url
+    if clean_url and clean_url.startswith("postgres://"):
+        clean_url = clean_url.replace("postgres://", "postgresql://", 1)
+    
+    if clean_url and "postgresql://" in clean_url and "+psycopg" not in clean_url:
+        DATABASE_URL = clean_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+    else:
+        DATABASE_URL = clean_url
+
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,
+        module=psycopg2,
+    )
+
+# ... A PARTIR DE AQUÍ DEJA TODO TU CÓDIGO TAL CUAL ESTÁ (las tablas, modelos, funciones, etc.) ...
+
+
 from __future__ import annotations
 
 import re
