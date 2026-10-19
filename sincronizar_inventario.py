@@ -24,6 +24,7 @@ RUTA_INVENTARIO = DATOS_DIR / "inventario.xlsx"
 RUTA_MARCAS = DATOS_DIR / "marcas.xls"
 RUTA_DISCOS = DATOS_DIR / "medidas_discos.xlsx"
 RUTA_TAMBORES = DATOS_DIR / "medidas_tambores.xlsx"
+RUTA_EMBRAGUES = DATOS_DIR / "medidas_embragues.xlsx"
 
 
 # ==================================================
@@ -528,6 +529,156 @@ def cargar_tambores() -> pd.DataFrame:
 
 
 # ==================================================
+# CARGAR MEDIDAS DE EMBRAGUES
+# ==================================================
+
+def cargar_embragues() -> pd.DataFrame:
+    if not RUTA_EMBRAGUES.exists():
+        raise FileNotFoundError(
+            f"No existe: {RUTA_EMBRAGUES}"
+        )
+
+    df = pd.read_excel(
+        RUTA_EMBRAGUES,
+        dtype=object,
+    )
+
+    df = limpiar_dataframe(df)
+
+    columna_codigo = buscar_columna(
+        df,
+        ["CODIGO", "CÓDIGO"],
+    )
+
+    columna_referencia = buscar_columna(
+        df,
+        ["REFERENCIA", "DESCRIPCION", "DESCRIPCIÓN"],
+    )
+
+    columna_diametro_pd = buscar_columna(
+        df,
+        [
+            "DIAMETRO P-D",
+            "DIAMETRO P_D",
+            "DIAMETRO_PD",
+            "DIAMETRO_P-D",
+        ],
+    )
+
+    columna_manzana_pd = buscar_columna(
+        df,
+        [
+            "MANZANA P-D",
+            "MANZANA P_D",
+            "MANZANA_PD",
+            "MANZANA_P-D",
+        ],
+    )
+
+    columna_dientes = buscar_columna(
+        df,
+        [
+            "N DIENTES",
+            "N_DIENTES",
+            "NUMERO DIENTES",
+            "NÚMERO DIENTES",
+        ],
+        obligatoria=False,
+    )
+
+    columna_diametro_motriz = buscar_columna(
+        df,
+        [
+            "DIAMETRO MOTRIZ",
+            "DIAMETRO_MOTRIZ",
+        ],
+        obligatoria=False,
+    )
+
+    columna_perno = buscar_columna(
+        df,
+        [
+            "DIAM PERNO A PERNO",
+            "DIAM_PERNO_A_PERNO",
+            "DIAMETRO PERNO A PERNO",
+            "DIAMETRO_PERNO_A_PERNO",
+        ],
+        obligatoria=False,
+    )
+
+    columna_aplicacion = buscar_columna(
+        df,
+        ["APLICACION", "APLICACIÓN"],
+        obligatoria=False,
+    )
+
+    columna_observacion = buscar_columna(
+        df,
+        ["OBSERVACION", "OBSERVACIÓN"],
+        obligatoria=False,
+    )
+
+    def obtener_texto(
+        columna: str | None,
+    ) -> pd.Series:
+        if columna is None:
+            return pd.Series(
+                [""] * len(df),
+                index=df.index,
+                dtype=object,
+            )
+
+        return df[columna].apply(
+            normalizar_texto
+        )
+
+    resultado = pd.DataFrame(
+        {
+            "codigo": df[columna_codigo].apply(
+                normalizar_codigo
+            ),
+            "referencia": df[columna_referencia].apply(
+                normalizar_texto
+            ),
+            # Se guardan como texto porque existen valores como
+            # 200-205, 133-134, EA 15.3, etc.
+            "diametro_pd": obtener_texto(
+                columna_diametro_pd
+            ),
+            "manzana_pd": obtener_texto(
+                columna_manzana_pd
+            ),
+            "n_dientes": obtener_texto(
+                columna_dientes
+            ),
+            "diametro_motriz": obtener_texto(
+                columna_diametro_motriz
+            ),
+            "diam_perno_a_perno": obtener_texto(
+                columna_perno
+            ),
+            "aplicacion": obtener_texto(
+                columna_aplicacion
+            ),
+            "observacion": obtener_texto(
+                columna_observacion
+            ),
+        }
+    )
+
+    resultado = resultado[
+        resultado["codigo"] != ""
+    ].copy()
+
+    resultado = resultado.drop_duplicates(
+        subset=["codigo"],
+        keep="first",
+    )
+
+    return resultado
+
+
+# ==================================================
 # VALIDACIONES
 # ==================================================
 
@@ -536,6 +687,7 @@ def validar_datos(
     marcas: pd.DataFrame,
     discos: pd.DataFrame,
     tambores: pd.DataFrame,
+    embragues: pd.DataFrame,
 ) -> None:
     if inventario.empty:
         raise ValueError(
@@ -568,6 +720,10 @@ def validar_datos(
         f"Tambores preparados: {len(tambores):,} filas"
     )
 
+    print(
+        f"Embragues preparados: {len(embragues):,} filas"
+    )
+
 
 # ==================================================
 # SUBIR A POSTGRESQL
@@ -580,12 +736,14 @@ def sincronizar() -> None:
     marcas = cargar_marcas()
     discos = cargar_discos()
     tambores = cargar_tambores()
+    embragues = cargar_embragues()
 
     validar_datos(
         inventario,
         marcas,
         discos,
         tambores,
+        embragues,
     )
 
     with engine.begin() as conexion:
@@ -635,6 +793,26 @@ def sincronizar() -> None:
             index=False,
             chunksize=1000,
             method="multi",
+        )
+
+        embragues.to_sql(
+            "stg_medidas_embragues",
+            con=conexion,
+            if_exists="replace",
+            index=False,
+            chunksize=1000,
+            method="multi",
+            dtype={
+                "codigo": Text(),
+                "referencia": Text(),
+                "diametro_pd": Text(),
+                "manzana_pd": Text(),
+                "n_dientes": Text(),
+                "diametro_motriz": Text(),
+                "diam_perno_a_perno": Text(),
+                "aplicacion": Text(),
+                "observacion": Text(),
+            },
         )
 
         # Reemplazar inventario definitivo.
@@ -747,6 +925,40 @@ def sincronizar() -> None:
             )
         )
 
+        # Reemplazar medidas de embragues.
+        conexion.execute(
+            text(
+                """
+                DELETE FROM medidas_embragues;
+
+                INSERT INTO medidas_embragues (
+                    codigo,
+                    referencia,
+                    diametro_pd,
+                    manzana_pd,
+                    n_dientes,
+                    diametro_motriz,
+                    diam_perno_a_perno,
+                    aplicacion,
+                    observacion,
+                    fecha_actualizacion
+                )
+                SELECT
+                    codigo,
+                    referencia,
+                    diametro_pd,
+                    manzana_pd,
+                    n_dientes,
+                    diametro_motriz,
+                    diam_perno_a_perno,
+                    aplicacion,
+                    observacion,
+                    NOW()
+                FROM stg_medidas_embragues;
+                """
+            )
+        )
+
         # Eliminar tablas de trabajo.
         conexion.execute(
             text(
@@ -755,6 +967,7 @@ def sincronizar() -> None:
                 DROP TABLE IF EXISTS stg_marcas;
                 DROP TABLE IF EXISTS stg_medidas_discos;
                 DROP TABLE IF EXISTS stg_medidas_tambores;
+                DROP TABLE IF EXISTS stg_medidas_embragues;
                 """
             )
         )
@@ -809,6 +1022,7 @@ def sincronizar() -> None:
     print(f"Marcas: {len(marcas):,}")
     print(f"Medidas de discos: {len(discos):,}")
     print(f"Medidas de tambores: {len(tambores):,}")
+    print(f"Medidas de embragues: {len(embragues):,}")
     print(f"Duración: {duracion}")
     print("=" * 55)
 

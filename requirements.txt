@@ -3,7 +3,9 @@ uvicorn[standard]
 pandas
 sqlalchemy
 psycopg[binary]
+psycopg2-binary
 python-dotenv
 rapidfuzz
 openpyxl
 xlrd
+psycopg
