@@ -1,3 +1,15 @@
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite peticiones desde cualquier origen (o puedes poner ["https://servistock-ia.web.app"])
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Query

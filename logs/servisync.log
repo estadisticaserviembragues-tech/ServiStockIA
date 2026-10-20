@@ -47538,3 +47538,212 @@
 [2026-10-19 16:34:00] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
 [2026-10-19 16:34:00] Archivo de bloqueo eliminado correctamente.
 [2026-10-19 16:34:00] ==================================================
+[2026-10-19 16:48:17] Bloqueo creado correctamente. PID: 32848.
+[2026-10-19 16:48:17] ==================================================
+[2026-10-19 16:48:17] Inicio de ServiSync.
+[2026-10-19 16:48:17] Abriendo Excel en segundo plano.
+[2026-10-19 16:48:18] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 16:48:18] DETALLE: Traceback (most recent call last):
+[2026-10-19 16:48:18] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-19 16:48:18] DETALLE:     actualizar_excel()
+[2026-10-19 16:48:18] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-19 16:48:18] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-19 16:48:18] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-19 16:48:18] DETALLE:         str(RUTA_EXCEL),
+[2026-10-19 16:48:18] DETALLE:         UpdateLinks=3,
+[2026-10-19 16:48:18] DETALLE:         ReadOnly=False,
+[2026-10-19 16:48:18] DETALLE:     )
+[2026-10-19 16:48:18] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-19 16:48:18] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 16:48:18] Archivo de bloqueo eliminado correctamente.
+[2026-10-19 16:48:18] ==================================================
+[2026-10-19 16:48:56] Bloqueo creado correctamente. PID: 3496.
+[2026-10-19 16:48:56] ==================================================
+[2026-10-19 16:48:56] Inicio de ServiSync.
+[2026-10-19 16:48:56] Abriendo Excel en segundo plano.
+[2026-10-19 16:49:01] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 16:49:01] DETALLE: Traceback (most recent call last):
+[2026-10-19 16:49:01] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-19 16:49:01] DETALLE:     actualizar_excel()
+[2026-10-19 16:49:01] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-19 16:49:01] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-19 16:49:01] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-19 16:49:01] DETALLE:         str(RUTA_EXCEL),
+[2026-10-19 16:49:01] DETALLE:         UpdateLinks=3,
+[2026-10-19 16:49:01] DETALLE:         ReadOnly=False,
+[2026-10-19 16:49:01] DETALLE:     )
+[2026-10-19 16:49:01] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-19 16:49:01] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 16:49:01] Archivo de bloqueo eliminado correctamente.
+[2026-10-19 16:49:01] ==================================================
+[2026-10-19 17:03:17] Bloqueo creado correctamente. PID: 38276.
+[2026-10-19 17:03:17] ==================================================
+[2026-10-19 17:03:17] Inicio de ServiSync.
+[2026-10-19 17:03:17] Abriendo Excel en segundo plano.
+[2026-10-19 17:03:20] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 17:03:20] DETALLE: Traceback (most recent call last):
+[2026-10-19 17:03:21] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-19 17:03:21] DETALLE:     actualizar_excel()
+[2026-10-19 17:03:21] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-19 17:03:21] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-19 17:03:21] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-19 17:03:21] DETALLE:         str(RUTA_EXCEL),
+[2026-10-19 17:03:21] DETALLE:         UpdateLinks=3,
+[2026-10-19 17:03:21] DETALLE:         ReadOnly=False,
+[2026-10-19 17:03:21] DETALLE:     )
+[2026-10-19 17:03:21] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-19 17:03:21] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 17:03:21] Archivo de bloqueo eliminado correctamente.
+[2026-10-19 17:03:21] ==================================================
+[2026-10-19 17:03:55] Bloqueo creado correctamente. PID: 30572.
+[2026-10-19 17:03:55] ==================================================
+[2026-10-19 17:03:55] Inicio de ServiSync.
+[2026-10-19 17:03:55] Abriendo Excel en segundo plano.
+[2026-10-19 17:03:57] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 17:03:57] DETALLE: Traceback (most recent call last):
+[2026-10-19 17:03:57] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-19 17:03:57] DETALLE:     actualizar_excel()
+[2026-10-19 17:03:57] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-19 17:03:57] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-19 17:03:57] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-19 17:03:57] DETALLE:         str(RUTA_EXCEL),
+[2026-10-19 17:03:57] DETALLE:         UpdateLinks=3,
+[2026-10-19 17:03:57] DETALLE:         ReadOnly=False,
+[2026-10-19 17:03:57] DETALLE:     )
+[2026-10-19 17:03:57] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-19 17:03:57] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 17:03:57] Archivo de bloqueo eliminado correctamente.
+[2026-10-19 17:03:57] ==================================================
+[2026-10-19 17:25:14] Bloqueo creado correctamente. PID: 9448.
+[2026-10-19 17:25:14] ==================================================
+[2026-10-19 17:25:17] Inicio de ServiSync.
+[2026-10-19 17:25:17] Abriendo Excel en segundo plano.
+[2026-10-19 17:25:21] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 17:25:21] DETALLE: Traceback (most recent call last):
+[2026-10-19 17:25:21] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-19 17:25:21] DETALLE:     actualizar_excel()
+[2026-10-19 17:25:21] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-19 17:25:21] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-19 17:25:21] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-19 17:25:21] DETALLE:         str(RUTA_EXCEL),
+[2026-10-19 17:25:21] DETALLE:         UpdateLinks=3,
+[2026-10-19 17:25:21] DETALLE:         ReadOnly=False,
+[2026-10-19 17:25:21] DETALLE:     )
+[2026-10-19 17:25:21] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-19 17:25:21] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-19 17:25:21] Archivo de bloqueo eliminado correctamente.
+[2026-10-19 17:25:21] ==================================================
+[2026-10-20 08:17:16] Bloqueo creado correctamente. PID: 39048.
+[2026-10-20 08:17:16] ==================================================
+[2026-10-20 08:17:16] Inicio de ServiSync.
+[2026-10-20 08:17:16] Abriendo Excel en segundo plano.
+[2026-10-20 08:17:22] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:17:22] DETALLE: Traceback (most recent call last):
+[2026-10-20 08:17:22] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-20 08:17:25] DETALLE:     actualizar_excel()
+[2026-10-20 08:17:27] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-20 08:17:27] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-20 08:17:27] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-20 08:17:27] DETALLE:         str(RUTA_EXCEL),
+[2026-10-20 08:17:27] DETALLE:         UpdateLinks=3,
+[2026-10-20 08:17:27] DETALLE:         ReadOnly=False,
+[2026-10-20 08:17:27] DETALLE:     )
+[2026-10-20 08:17:27] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-20 08:17:27] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:17:27] Archivo de bloqueo eliminado correctamente.
+[2026-10-20 08:17:27] ==================================================
+[2026-10-20 08:18:17] Bloqueo creado correctamente. PID: 35040.
+[2026-10-20 08:18:17] ==================================================
+[2026-10-20 08:18:17] Inicio de ServiSync.
+[2026-10-20 08:18:17] Abriendo Excel en segundo plano.
+[2026-10-20 08:18:18] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:18:18] DETALLE: Traceback (most recent call last):
+[2026-10-20 08:18:18] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-20 08:18:18] DETALLE:     actualizar_excel()
+[2026-10-20 08:18:18] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-20 08:18:18] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-20 08:18:18] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-20 08:18:18] DETALLE:         str(RUTA_EXCEL),
+[2026-10-20 08:18:18] DETALLE:         UpdateLinks=3,
+[2026-10-20 08:18:18] DETALLE:         ReadOnly=False,
+[2026-10-20 08:18:18] DETALLE:     )
+[2026-10-20 08:18:18] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-20 08:18:18] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:18:18] Archivo de bloqueo eliminado correctamente.
+[2026-10-20 08:18:18] ==================================================
+[2026-10-20 08:18:55] Bloqueo creado correctamente. PID: 27788.
+[2026-10-20 08:18:55] ==================================================
+[2026-10-20 08:18:55] Inicio de ServiSync.
+[2026-10-20 08:18:55] Abriendo Excel en segundo plano.
+[2026-10-20 08:18:59] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:18:59] DETALLE: Traceback (most recent call last):
+[2026-10-20 08:18:59] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-20 08:18:59] DETALLE:     actualizar_excel()
+[2026-10-20 08:18:59] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-20 08:18:59] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-20 08:18:59] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-20 08:18:59] DETALLE:         str(RUTA_EXCEL),
+[2026-10-20 08:18:59] DETALLE:         UpdateLinks=3,
+[2026-10-20 08:18:59] DETALLE:         ReadOnly=False,
+[2026-10-20 08:18:59] DETALLE:     )
+[2026-10-20 08:18:59] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-20 08:18:59] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:18:59] Archivo de bloqueo eliminado correctamente.
+[2026-10-20 08:18:59] ==================================================
+[2026-10-20 08:33:18] Bloqueo creado correctamente. PID: 26224.
+[2026-10-20 08:33:18] ==================================================
+[2026-10-20 08:33:18] Inicio de ServiSync.
+[2026-10-20 08:33:18] Abriendo Excel en segundo plano.
+[2026-10-20 08:33:23] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:33:23] DETALLE: Traceback (most recent call last):
+[2026-10-20 08:33:23] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-20 08:33:23] DETALLE:     actualizar_excel()
+[2026-10-20 08:33:23] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-20 08:33:23] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-20 08:33:23] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-20 08:33:23] DETALLE:         str(RUTA_EXCEL),
+[2026-10-20 08:33:23] DETALLE:         UpdateLinks=3,
+[2026-10-20 08:33:23] DETALLE:         ReadOnly=False,
+[2026-10-20 08:33:23] DETALLE:     )
+[2026-10-20 08:33:23] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-20 08:33:23] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:33:23] Archivo de bloqueo eliminado correctamente.
+[2026-10-20 08:33:23] ==================================================
+[2026-10-20 08:33:55] Bloqueo creado correctamente. PID: 13684.
+[2026-10-20 08:33:55] ==================================================
+[2026-10-20 08:33:55] Inicio de ServiSync.
+[2026-10-20 08:33:55] Abriendo Excel en segundo plano.
+[2026-10-20 08:34:00] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:34:00] DETALLE: Traceback (most recent call last):
+[2026-10-20 08:34:00] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-20 08:34:00] DETALLE:     actualizar_excel()
+[2026-10-20 08:34:00] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-20 08:34:00] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-20 08:34:00] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-20 08:34:00] DETALLE:         str(RUTA_EXCEL),
+[2026-10-20 08:34:00] DETALLE:         UpdateLinks=3,
+[2026-10-20 08:34:00] DETALLE:         ReadOnly=False,
+[2026-10-20 08:34:00] DETALLE:     )
+[2026-10-20 08:34:00] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-20 08:34:00] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:34:00] Archivo de bloqueo eliminado correctamente.
+[2026-10-20 08:34:00] ==================================================
+[2026-10-20 08:48:18] Bloqueo creado correctamente. PID: 14508.
+[2026-10-20 08:48:18] ==================================================
+[2026-10-20 08:48:18] Inicio de ServiSync.
+[2026-10-20 08:48:18] Abriendo Excel en segundo plano.
+[2026-10-20 08:48:23] ServiSync terminó con error: com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:48:23] DETALLE: Traceback (most recent call last):
+[2026-10-20 08:48:23] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 397, in main
+[2026-10-20 08:48:23] DETALLE:     actualizar_excel()
+[2026-10-20 08:48:23] DETALLE:     ~~~~~~~~~~~~~~~~^^
+[2026-10-20 08:48:23] DETALLE:   File "C:\Users\ASUS TUF F15\Desktop\AsistenteBodegaIA\servisync.py", line 268, in actualizar_excel
+[2026-10-20 08:48:23] DETALLE:     libro = excel.Workbooks.Open(
+[2026-10-20 08:48:23] DETALLE:         str(RUTA_EXCEL),
+[2026-10-20 08:48:23] DETALLE:         UpdateLinks=3,
+[2026-10-20 08:48:23] DETALLE:         ReadOnly=False,
+[2026-10-20 08:48:23] DETALLE:     )
+[2026-10-20 08:48:23] DETALLE:   File "<COMObject <unknown>>", line 5, in Open
+[2026-10-20 08:48:23] DETALLE: pywintypes.com_error: (-2147352567, 'Ocurrió una excepción.', (0, 'Microsoft Excel', "Microsoft Excel no puede obtener acceso al archivo 'C:\\Users\\ASUS TUF F15\\Desktop\\AsistenteBodegaIA\\datos\\inventario.xlsx'. Puede haber varios motivos:\n\n• El nombre o la ruta del archivo no existen.\n• Otro programa está usando el archivo.\n• El libro que está intentando guardar tiene el mismo nombre que otro libro que está abierto en estos momentos.", 'xlmain11.chm', 0, -2146827284), None)
+[2026-10-20 08:48:23] Archivo de bloqueo eliminado correctamente.
+[2026-10-20 08:48:23] ==================================================
