@@ -1,14 +1,4 @@
-from fastapi.middleware.cors import CORSMiddleware
-
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Permite peticiones desde cualquier origen (o puedes poner ["https://servistock-ia.web.app"])
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+from __future__ import annotations
 
 from typing import Any
 
@@ -20,13 +10,11 @@ from config import (
     API_TITULO,
     API_VERSION,
 )
-
 from database import (
     cargar_inventario_completo,
     obtener_medidas_producto,
     obtener_ultima_sincronizacion,
 )
-
 from buscador import (
     limpiar_codigo,
     procesar_consulta,
@@ -45,13 +33,13 @@ app = FastAPI(
 
 
 # ==================================================
-# CORS
+# CORS (CONFIGURACIÓN ÚNICA Y CENTRALIZADA)
 # ==================================================
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
