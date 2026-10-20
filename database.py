@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-import psycopg2
+import re
+from typing import Any
 
-from sqlalchemy import create_engine
+import pandas as pd
+import psycopg2
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -36,19 +39,11 @@ else:
         module=psycopg2,
     )
 
-# ... A PARTIR DE AQUÍ DEJA TODO TU CÓDIGO TAL CUAL ESTÁ (las tablas, modelos, funciones, etc.) ...
+# Configuración de la base de datos (Session y Base)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
-
-from __future__ import annotations
-
-import re
-from typing import Any
-
-import pandas as pd
-from sqlalchemy import text
-
-from postgres import engine
-
+# A partir de aquí coloca el resto de tus modelos, tablas y funciones que tenías en database.py
 
 # ==================================================
 # NORMALIZAR CÓDIGOS
