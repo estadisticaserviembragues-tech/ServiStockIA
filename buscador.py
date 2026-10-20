@@ -727,6 +727,7 @@ def filtrar_almacen(
     ].copy()
 
 
+
 # ==================================================
 # AGRUPAR PRODUCTOS
 # ==================================================
@@ -739,7 +740,7 @@ def agrupar_productos(
 
     Ejemplo:
     YQ4908 en NORTE y NORTE FGS se convierte
-    en una sola ficha con el stock total.
+    en una sola ficha con el stock total y sus precios.
     """
 
     productos = []
@@ -805,6 +806,11 @@ def agrupar_productos(
                 ].max()
             )
 
+        # Extracción segura de los precios desde la primera fila del grupo
+        precio_1 = float(primera_fila.get("precio_1", 0.0) or 0.0)
+        precio_2 = float(primera_fila.get("precio_2", 0.0) or 0.0)
+        precio_3 = float(primera_fila.get("precio_3", 0.0) or 0.0)
+
         productos.append(
             {
                 "codigo": str(
@@ -823,6 +829,9 @@ def agrupar_productos(
                     )
                 ),
                 "stock_total": stock_total,
+                "precio_1": precio_1,
+                "precio_2": precio_2,
+                "precio_3": precio_3,
                 "almacenes": almacenes,
                 "puntaje": puntaje,
             }

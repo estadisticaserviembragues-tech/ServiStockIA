@@ -183,7 +183,6 @@ def buscar_columna(
 # ==================================================
 # CARGAR INVENTARIO
 # ==================================================
-
 def cargar_inventario() -> pd.DataFrame:
     if not RUTA_INVENTARIO.exists():
         raise FileNotFoundError(
@@ -212,14 +211,33 @@ def cargar_inventario() -> pd.DataFrame:
         ["ALMACEN", "ALMACÉN", "BODEGA"],
     )
 
+    # Configurada como opcional por si no existe en el Excel
     columna_ubicacion = buscar_columna(
         df,
         ["UBICACION", "UBICACIÓN"],
+        obligatoria=False,
     )
 
     columna_cantidad = buscar_columna(
         df,
         ["CANTIDAD", "STOCK", "EXISTENCIA"],
+    )
+
+    # Búsqueda de las columnas de precios de forma opcional
+    columna_precio_1 = buscar_columna(
+        df,
+        ["PRECIO 1", "PRECIO1", "PRECIO_1"],
+        obligatoria=False,
+    )
+    columna_precio_2 = buscar_columna(
+        df,
+        ["PRECIO 2", "PRECIO2", "PRECIO_2"],
+        obligatoria=False,
+    )
+    columna_precio_3 = buscar_columna(
+        df,
+        ["PRECIO 3", "PRECIO3", "PRECIO_3"],
+        obligatoria=False,
     )
 
     resultado = pd.DataFrame(
@@ -235,10 +253,14 @@ def cargar_inventario() -> pd.DataFrame:
             ),
             "ubicacion": df[columna_ubicacion].apply(
                 normalizar_texto
-            ),
+            ) if columna_ubicacion else "",
             "cantidad": df[columna_cantidad].apply(
                 convertir_numero
             ),
+            # Precios procesados con la función convertir_numero
+            "precio_1": df[columna_precio_1].apply(convertir_numero) if columna_precio_1 else 0.0,
+            "precio_2": df[columna_precio_2].apply(convertir_numero) if columna_precio_2 else 0.0,
+            "precio_3": df[columna_precio_3].apply(convertir_numero) if columna_precio_3 else 0.0,
         }
     )
 
@@ -252,9 +274,12 @@ def cargar_inventario() -> pd.DataFrame:
         .astype(float)
     )
 
+    # Rellenar valores nulos de precios con 0.0
+    resultado["precio_1"] = resultado["precio_1"].fillna(0.0).astype(float)
+    resultado["precio_2"] = resultado["precio_2"].fillna(0.0).astype(float)
+    resultado["precio_3"] = resultado["precio_3"].fillna(0.0).astype(float)
+
     return resultado
-
-
 # ==================================================
 # CARGAR MARCAS
 # ==================================================

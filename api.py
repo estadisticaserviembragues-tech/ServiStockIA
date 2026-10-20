@@ -157,8 +157,7 @@ def buscar(
             consulta
         )
 
-        # Agregar ficha técnica.
-        # Puede ser DISCO, TAMBOR o EMBRAGUE.
+        # Agregar ficha técnica y garantizar precios por producto
         for producto in resultado.get(
             "productos",
             [],
@@ -179,6 +178,11 @@ def buscar(
                 producto[
                     "ficha_tecnica"
                 ] = ficha_tecnica
+
+            # Garantizar que siempre existan los campos de precios
+            producto["precio_1"] = float(producto.get("precio_1", 0.0) or 0.0)
+            producto["precio_2"] = float(producto.get("precio_2", 0.0) or 0.0)
+            producto["precio_3"] = float(producto.get("precio_3", 0.0) or 0.0)
 
         return {
             "estado": "correcto",
@@ -249,6 +253,11 @@ def obtener_producto(
             producto[
                 "ficha_tecnica"
             ] = ficha_tecnica
+
+        # Garantizar que los precios estén en la respuesta del producto
+        producto["precio_1"] = float(producto.get("precio_1", 0.0) or 0.0)
+        producto["precio_2"] = float(producto.get("precio_2", 0.0) or 0.0)
+        producto["precio_3"] = float(producto.get("precio_3", 0.0) or 0.0)
 
         return {
             "estado": "correcto",
