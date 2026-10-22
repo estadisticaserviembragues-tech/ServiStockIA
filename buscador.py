@@ -21,10 +21,6 @@ except ImportError:
 def normalizar(texto: Any) -> str:
     """
     Prepara un texto para realizar comparaciones.
-
-    Ejemplos:
-    - "¿Dónde está?" -> "donde esta"
-    - "YQ-4908" -> "yq-4908"
     """
 
     texto = str(texto).lower().strip()
@@ -54,10 +50,6 @@ def normalizar(texto: Any) -> str:
 def limpiar_codigo(texto: Any) -> str:
     """
     Elimina espacios, guiones y símbolos del código.
-
-    Ejemplos:
-    - YQ-4908 -> yq4908
-    - YQ 4908 -> yq4908
     """
 
     return re.sub(
@@ -72,50 +64,31 @@ def limpiar_codigo(texto: Any) -> str:
 # ==================================================
 
 SINONIMOS = {
-    # Embrague
     "embrage": "embrague",
     "embreague": "embrague",
     "embraguee": "embrague",
     "clutch": "embrague",
-
-    # Discos
     "disko": "disco",
     "diskos": "disco",
     "discos": "disco",
     "disc": "disco",
-
-    # Pastillas
     "pastilla": "past",
     "pastillas": "past",
     "past": "past",
-
-    # Zapatas
     "zapatas": "zapata",
-
-    # Rodamientos
     "rulimanes": "ruliman",
     "rodamiento": "ruliman",
     "rodamientos": "ruliman",
     "balinera": "ruliman",
     "balineras": "ruliman",
-
-    # Volantes
     "volantes": "volante",
-
-    # Vehículos escritos de distintas maneras
     "bt 50": "bt50",
     "bt-50": "bt50",
-    "bt 50": "bt50",
-
     "t 60": "t60",
     "t-60": "t60",
-
     "d max": "dmax",
     "d-max": "dmax",
-
     "grand vitara": "grandvitara",
-
-    # Errores frecuentes de marcas o vehículos
     "toyta": "toyota",
     "chevolet": "chevrolet",
     "chevrolet": "chevrolet",
@@ -126,14 +99,8 @@ SINONIMOS = {
 
 
 def aplicar_sinonimos(texto: Any) -> str:
-    """
-    Corrige palabras frecuentes antes de buscar.
-    """
-
     resultado = normalizar(texto)
 
-    # Se ordenan las frases por longitud para reemplazar
-    # primero las expresiones más largas.
     sinonimos_ordenados = sorted(
         SINONIMOS.items(),
         key=lambda elemento: len(elemento[0]),
@@ -154,70 +121,16 @@ def aplicar_sinonimos(texto: Any) -> str:
 # ==================================================
 
 PALABRAS_IGNORADAS = {
-    "a",
-    "al",
-    "algo",
-    "dame",
-    "donde",
-    "esta",
-    "estan",
-    "hay",
-    "quiero",
-    "necesito",
-    "busco",
-    "buscar",
-    "muestrame",
-    "mostrar",
-
-    "el",
-    "la",
-    "los",
-    "las",
-    "un",
-    "una",
-    "unos",
-    "unas",
-
-    "de",
-    "del",
-    "para",
-    "por",
-    "en",
-    "mi",
-
-    "tengo",
-    "tienes",
-    "tiene",
-    "tienen",
-
-    "cuanto",
-    "cuantos",
-    "cuanta",
-    "cuantas",
-
-    "cantidad",
-    "stock",
-    "total",
-
-    "producto",
-    "productos",
-    "articulo",
-    "articulos",
-
-    "bodega",
-    "inventario",
-
-    "solo",
-    "solamente",
+    "a", "al", "algo", "dame", "donde", "esta", "estan", "hay", "quiero",
+    "necesito", "busco", "buscar", "muestrame", "mostrar", "el", "la",
+    "los", "las", "un", "una", "unos", "unas", "de", "del", "para", "por",
+    "en", "mi", "tengo", "tienes", "tiene", "tienen", "cuanto", "cuantos",
+    "cuanta", "cuantas", "cantidad", "stock", "total", "producto", "productos",
+    "articulo", "articulos", "bodega", "inventario", "solo", "solamente",
 }
 
 
 def limpiar_consulta(consulta: Any) -> str:
-    """
-    Elimina palabras conversacionales que no sirven
-    para identificar el producto.
-    """
-
     consulta_normalizada = aplicar_sinonimos(
         consulta
     )
@@ -240,11 +153,6 @@ def limpiar_consulta(consulta: Any) -> str:
 # ==================================================
 
 def convertir_cantidad(valor: Any) -> float:
-    """
-    Convierte cantidades provenientes de Excel
-    en números utilizables.
-    """
-
     try:
         texto = str(valor).strip()
         texto = texto.replace(" ", "")
@@ -261,15 +169,6 @@ def convertir_cantidad(valor: Any) -> float:
 # ==================================================
 
 def detectar_intencion(consulta: str) -> str:
-    """
-    Determina qué desea el usuario.
-
-    Devuelve:
-    - "cantidad"
-    - "ubicacion"
-    - "buscar"
-    """
-
     texto = normalizar(
         consulta
     )
@@ -279,35 +178,21 @@ def detectar_intencion(consulta: str) -> str:
     )
 
     palabras_cantidad = {
-        "cuanto",
-        "cuantos",
-        "cuanta",
-        "cuantas",
-        "cantidad",
-        "stock",
-        "total",
+        "cuanto", "cuantos", "cuanta", "cuantas",
+        "cantidad", "stock", "total",
     }
 
     frases_ubicacion = {
-        "donde",
-        "ubicacion",
-        "ubicaciones",
+        "donde", "ubicacion", "ubicaciones",
     }
 
-    if palabras.intersection(
-        palabras_cantidad
-    ):
+    if palabras.intersection(palabras_cantidad):
         return "cantidad"
 
-    if palabras.intersection(
-        frases_ubicacion
-    ):
+    if palabras.intersection(frases_ubicacion):
         return "ubicacion"
 
-    if (
-        "en que bodega" in texto
-        or "en que ubicacion" in texto
-    ):
+    if "en que bodega" in texto or "en que ubicacion" in texto:
         return "ubicacion"
 
     return "buscar"
@@ -320,13 +205,6 @@ def detectar_intencion(consulta: str) -> str:
 def detectar_almacen(
     consulta: str,
 ) -> str | None:
-    """
-    Detecta el almacén mencionado por el usuario.
-
-    Importante:
-    NORTE FGS se comprueba antes de NORTE.
-    """
-
     texto = normalizar(
         consulta
     )
@@ -347,16 +225,6 @@ def detectar_almacen(
 def extraer_posibles_codigos(
     consulta: str,
 ) -> set[str]:
-    """
-    Extrae palabras que podrían representar códigos.
-
-    Ejemplo:
-    "cuanto tengo de YQ4908"
-    devuelve {"cuanto", "tengo", "de", "yq4908"}.
-
-    Luego se comparan con los códigos reales.
-    """
-
     texto = normalizar(
         consulta
     )
@@ -378,10 +246,6 @@ def buscar_codigo_exacto(
     df: pd.DataFrame,
     consulta: str,
 ) -> pd.DataFrame:
-    """
-    Busca un código exacto, incluso dentro de una frase.
-    """
-
     posibles_codigos = extraer_posibles_codigos(
         consulta
     )
@@ -405,13 +269,6 @@ def buscar_codigo_parcial(
     df: pd.DataFrame,
     consulta: str,
 ) -> pd.DataFrame:
-    """
-    Permite que 4908 encuentre YQ4908.
-
-    Solo se utiliza cuando la consulta limpia
-    contiene una sola palabra.
-    """
-
     consulta_limpia = limpiar_consulta(
         consulta
     )
@@ -448,45 +305,11 @@ def calcular_puntaje_producto(
     fila: pd.Series,
     palabras_busqueda: list[str],
 ) -> float:
-    """
-    Calcula qué tan relacionado está un producto
-    con la búsqueda del usuario.
-    """
-
-    codigo = aplicar_sinonimos(
-        fila.get(
-            "CODIGO",
-            "",
-        )
-    )
-
-    articulo = aplicar_sinonimos(
-        fila.get(
-            "ARTICULO",
-            "",
-        )
-    )
-
-    marca = aplicar_sinonimos(
-        fila.get(
-            "MARCA",
-            "",
-        )
-    )
-
-    almacen = aplicar_sinonimos(
-        fila.get(
-            "ALMACEN",
-            "",
-        )
-    )
-
-    ubicacion = aplicar_sinonimos(
-        fila.get(
-            "UBICACION",
-            "",
-        )
-    )
+    codigo = aplicar_sinonimos(fila.get("CODIGO", ""))
+    articulo = aplicar_sinonimos(fila.get("ARTICULO", ""))
+    marca = aplicar_sinonimos(fila.get("MARCA", ""))
+    almacen = aplicar_sinonimos(fila.get("ALMACEN", ""))
+    ubicacion = aplicar_sinonimos(fila.get("UBICACION", ""))
 
     texto_producto = " ".join(
         [
@@ -505,38 +328,26 @@ def calcular_puntaje_producto(
     puntajes_palabras = []
 
     for palabra_busqueda in palabras_busqueda:
-
-        # Coincidencia exacta
         if palabra_busqueda in palabras_producto:
-            puntajes_palabras.append(
-                100.0
-            )
+            puntajes_palabras.append(100.0)
             continue
 
-        # Coincidencia parcial
         coincidencia_parcial = any(
             (
-                palabra_busqueda
-                in palabra_producto
-                or
-                palabra_producto
-                in palabra_busqueda
+                palabra_busqueda in palabra_producto
+                or palabra_producto in palabra_busqueda
             )
             for palabra_producto in palabras_producto
             if (
                 len(palabra_busqueda) >= 3
-                and
-                len(palabra_producto) >= 3
+                and len(palabra_producto) >= 3
             )
         )
 
         if coincidencia_parcial:
-            puntajes_palabras.append(
-                95.0
-            )
+            puntajes_palabras.append(95.0)
             continue
 
-        # Coincidencia aproximada
         mejor_puntaje = max(
             (
                 fuzz.ratio(
@@ -562,19 +373,15 @@ def calcular_puntaje_producto(
 
     porcentaje_coincidencia = (
         coincidencias_buenas
-        /
-        len(puntajes_palabras)
+        / len(puntajes_palabras)
     )
 
-    # Exigimos que al menos el 75 % de las palabras
-    # importantes estén relacionadas.
     if porcentaje_coincidencia < 0.75:
         return 0.0
 
     return (
         sum(puntajes_palabras)
-        /
-        len(puntajes_palabras)
+        / len(puntajes_palabras)
     )
 
 
@@ -586,11 +393,6 @@ def buscar_por_texto(
     df: pd.DataFrame,
     consulta: str,
 ) -> pd.DataFrame:
-    """
-    Busca por artículo, vehículo, marca,
-    almacén y ubicación.
-    """
-
     consulta_limpia = limpiar_consulta(
         consulta
     )
@@ -644,14 +446,6 @@ def buscar_filas(
     df: pd.DataFrame,
     consulta: str,
 ) -> pd.DataFrame:
-    """
-    Ejecuta la búsqueda siguiendo prioridades:
-
-    1. Código exacto.
-    2. Código parcial.
-    3. Texto inteligente.
-    """
-
     consulta = str(
         consulta
     ).strip()
@@ -705,10 +499,6 @@ def filtrar_almacen(
     filas: pd.DataFrame,
     almacen: str | None,
 ) -> pd.DataFrame:
-    """
-    Filtra resultados por almacén exacto.
-    """
-
     if not almacen:
         return filas
 
@@ -727,7 +517,6 @@ def filtrar_almacen(
     ].copy()
 
 
-
 # ==================================================
 # AGRUPAR PRODUCTOS
 # ==================================================
@@ -735,14 +524,6 @@ def filtrar_almacen(
 def agrupar_productos(
     filas: pd.DataFrame,
 ) -> list[dict[str, Any]]:
-    """
-    Agrupa todas las filas del mismo código.
-
-    Ejemplo:
-    YQ4908 en NORTE y NORTE FGS se convierte
-    en una sola ficha con el stock total y sus precios.
-    """
-
     productos = []
 
     if filas.empty:
@@ -806,10 +587,23 @@ def agrupar_productos(
                 ].max()
             )
 
-        # Extracción segura de los precios desde la primera fila del grupo
-        precio_1 = float(primera_fila.get("precio_1", 0.0) or 0.0)
-        precio_2 = float(primera_fila.get("precio_2", 0.0) or 0.0)
-        precio_3 = float(primera_fila.get("precio_3", 0.0) or 0.0)
+        # Búsqueda inteligente: revisa todas las filas del código en busca de un precio válido
+        def obtener_precio_robusto(grupo, *claves):
+            for clave in claves:
+                if clave in grupo.columns:
+                    for val in grupo[clave]:
+                        if val is not None and str(val).strip() != "":
+                            try:
+                                num = float(str(val).replace(",", "."))
+                                if num > 0:
+                                    return num
+                            except (ValueError, TypeError):
+                                pass
+            return 0.0
+
+        precio_1 = obtener_precio_robusto(grupo_codigo, "precio_1", "PRECIO_1", "PRECIO 1", "PRECIO1")
+        precio_2 = obtener_precio_robusto(grupo_codigo, "precio_2", "PRECIO_2", "PRECIO 2", "PRECIO2")
+        precio_3 = obtener_precio_robusto(grupo_codigo, "precio_3", "PRECIO_3", "PRECIO 3", "PRECIO3")
 
         productos.append(
             {
@@ -846,14 +640,11 @@ def agrupar_productos(
 
     return productos
 
-
-
 # ==================================================
 # FICHA TÉCNICA DE EMBRAGUES
 # ==================================================
 
 def _valor_limpio(valor: Any) -> Any:
-    """Convierte NaN/None en None y deja los demás valores listos para JSON."""
     if valor is None:
         return None
     try:
@@ -866,10 +657,6 @@ def _valor_limpio(valor: Any) -> Any:
 
 
 def obtener_ficha_embrague(codigo: Any) -> dict[str, Any] | None:
-    """
-    Busca las medidas de embrague por código y devuelve una ficha técnica.
-    Requiere que database.py exponga cargar_medidas_embragues().
-    """
     if cargar_medidas_embragues is None:
         return None
 
@@ -912,7 +699,6 @@ def obtener_ficha_embrague(codigo: Any) -> dict[str, Any] | None:
 
 
 def agregar_fichas_embrague(productos: list[dict[str, Any]]) -> None:
-    """Agrega ficha_tecnica a productos que tengan medidas de embrague."""
     for producto in productos:
         ficha = obtener_ficha_embrague(producto.get("codigo"))
         if ficha:
@@ -927,11 +713,6 @@ def procesar_consulta(
     consulta: str,
     df: pd.DataFrame | None = None,
 ) -> dict[str, Any]:
-    """
-    Función principal que utilizarán FastAPI,
-    Streamlit y posteriormente Flutter.
-    """
-
     if df is None:
         df = cargar_inventario_completo()
 
@@ -1019,79 +800,3 @@ def procesar_consulta(
         "productos": productos,
         "mensaje": mensaje,
     }
-
-
-# ==================================================
-# PRUEBAS DEL MÓDULO
-# ==================================================
-
-if __name__ == "__main__":
-    try:
-        inventario = cargar_inventario_completo()
-
-        consultas_prueba = [
-            "YQ4908",
-            "cuanto tengo de YQ4908",
-            "cuanto tengo de YQ4908 en NORTE",
-            "cuanto tengo de YQ4908 en NORTE FGS",
-            "donde esta YQ4908",
-            "cuantos discos de freno tengo",
-            "embrage sail",
-            "disko bt50",
-        ]
-
-        for consulta_prueba in consultas_prueba:
-            print(
-                "\n"
-                + "=" * 60
-            )
-
-            print(
-                f"CONSULTA: {consulta_prueba}"
-            )
-
-            resultado = procesar_consulta(
-                consulta_prueba,
-                inventario,
-            )
-
-            print(
-                resultado[
-                    "mensaje"
-                ]
-            )
-
-            print(
-                f"Intención: "
-                f"{resultado['intencion']}"
-            )
-
-            print(
-                f"Almacén: "
-                f"{resultado['almacen_solicitado']}"
-            )
-
-            print(
-                f"Productos: "
-                f"{resultado['cantidad_productos']}"
-            )
-
-            print(
-                f"Stock total: "
-                f"{resultado['stock_total']}"
-            )
-
-            for producto in resultado[
-                "productos"
-            ][:3]:
-                print(
-                    f"- {producto['codigo']} | "
-                    f"{producto['marca']} | "
-                    f"{producto['articulo']} | "
-                    f"Stock: {producto['stock_total']}"
-                )
-
-    except Exception as error:
-        print(
-            f"Error al probar buscador.py: {error}"
-        )

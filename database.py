@@ -43,7 +43,6 @@ else:
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# A partir de aquí coloca el resto de tus modelos, tablas y funciones que tenías en database.py
 
 # ==================================================
 # NORMALIZAR CÓDIGOS
@@ -88,6 +87,9 @@ def validar_columnas(
         "UBICACION",
         "CANTIDAD",
         "MARCA",
+        "precio_1",
+        "precio_2",
+        "precio_3",
     }
 
     columnas_faltantes = (
@@ -110,12 +112,8 @@ def validar_columnas(
 
 def cargar_inventario_completo() -> pd.DataFrame:
     """
-    Carga el inventario y las marcas directamente
+    Carga el inventario, marcas y precios directamente
     desde PostgreSQL Neon.
-
-    Esta función reemplaza la lectura local de:
-    - inventario.xlsx
-    - marcas.xls
     """
 
     consulta = text(
@@ -126,6 +124,9 @@ def cargar_inventario_completo() -> pd.DataFrame:
             COALESCE(i.almacen, '') AS "ALMACEN",
             COALESCE(i.ubicacion, '') AS "UBICACION",
             COALESCE(i.cantidad, 0) AS "CANTIDAD",
+            COALESCE(i.precio_1, 0) AS "precio_1",
+            COALESCE(i.precio_2, 0) AS "precio_2",
+            COALESCE(i.precio_3, 0) AS "precio_3",
             COALESCE(m.marca, 'SIN MARCA') AS "MARCA"
         FROM inventario AS i
         LEFT JOIN marcas AS m
@@ -167,6 +168,11 @@ def cargar_inventario_completo() -> pd.DataFrame:
         inventario["CANTIDAD"],
         errors="coerce",
     ).fillna(0)
+
+    # Convertir precios a numéricos de manera segura
+    inventario["precio_1"] = pd.to_numeric(inventario["precio_1"], errors="coerce").fillna(0.0)
+    inventario["precio_2"] = pd.to_numeric(inventario["precio_2"], errors="coerce").fillna(0.0)
+    inventario["precio_3"] = pd.to_numeric(inventario["precio_3"], errors="coerce").fillna(0.0)
 
     inventario["MARCA"] = inventario[
         "MARCA"
@@ -315,9 +321,6 @@ def obtener_medidas_tambor(
 def cargar_medidas_embragues() -> pd.DataFrame:
     """
     Carga todas las medidas de embragues desde Neon.
-
-    Devuelve columnas en mayúscula para que buscador.py
-    pueda trabajar con ellas directamente.
     """
 
     consulta = text(
@@ -440,13 +443,6 @@ def obtener_medidas_embrague(
 def obtener_medidas_producto(
     codigo: str,
 ) -> dict[str, Any] | None:
-    """
-    Busca la ficha técnica en este orden:
-    1. Disco
-    2. Tambor
-    3. Embrague
-    """
-
     medidas_disco = obtener_medidas_disco(
         codigo
     )
@@ -556,42 +552,6 @@ if __name__ == "__main__":
         print("Columnas:")
         print(
             list(df.columns)
-        )
-
-        print()
-        print("Última sincronización:")
-
-        ultima = obtener_ultima_sincronizacion()
-
-        print(
-            ultima
-        )
-
-        print()
-        print("Prueba de medidas disco HF-53N:")
-
-        print(
-            obtener_medidas_producto(
-                "HF-53N"
-            )
-        )
-
-        print()
-        print("Prueba de medidas tambor HF-53A:")
-
-        print(
-            obtener_medidas_producto(
-                "HF - 53A"
-            )
-        )
-
-        print()
-        print("Cantidad de registros de embragues:")
-
-        embragues = cargar_medidas_embragues()
-
-        print(
-            len(embragues)
         )
 
     except Exception as error:
